@@ -1,18 +1,20 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const data = require("./data/data");
+
 const connectDB = require("./config/db-config");
+const userRoute = require("./routes/user-route");
 
 dotenv.config();
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
-  res.send("<h1> Creating Chat Application using Socket.io </h1>");
+  res.send("<h1>Chat Application using Socket.io </h1>");
 });
 
-app.get("/api/chats", (req, res) => {
-  res.send(data);
-});
+app.use("/api/user", userRoute);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, async () => {

@@ -70,7 +70,7 @@ const Signup = () => {
         </InputGroup>
       </FormControl>
 
-      <FormControl id="profile-pic" isRequired>
+      <FormControl id="image" isRequired>
         <FormLabel>Upload you profile picture</FormLabel>
         <Input
           type="file"

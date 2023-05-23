@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const chatModel = mongoose.Schema(
+const chatSchema = mongoose.Schema(
   {
     chatName: {
       type: String,
@@ -28,6 +28,6 @@ const chatModel = mongoose.Schema(
   { timestamps: true }
 );
 
-const Chat = mongoose.model("Chat", chatModel);
+const Chat = mongoose.model("Chat", chatSchema);
 
 module.exports = Chat;
