@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const data = require("./data/data");
+const connectDB = require("./config/db-config");
 
 dotenv.config();
 const app = express();
@@ -14,6 +15,7 @@ app.get("/api/chats", (req, res) => {
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server started on PORT: ${PORT}`);
+  await connectDB();
 });
