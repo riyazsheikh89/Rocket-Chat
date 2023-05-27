@@ -46,4 +46,22 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { register, login };
+// Get all users
+// query string: /api/user/getall?search=riyaz
+const findUsers = asyncHandler(async (req, res) => {
+  const keyword = req.query.search;
+  const option = keyword
+    ? {
+        $or: [
+          // search for the matching name or email
+          { name: { $regex: keyword, $options: "i" } }, // i -> case insensitive
+          { email: { $regex: keyword, $options: "i" } },
+        ],
+      }
+    : {};
+  // find all the matching users, execpt the loged in user
+  const users = await User.find(option).find({ _id: { $ne: req.user.id } });
+  res.send(users);
+});
+
+module.exports = { register, login, findUsers };
