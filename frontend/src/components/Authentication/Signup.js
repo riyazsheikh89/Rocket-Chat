@@ -24,6 +24,8 @@ const Signup = () => {
   const history = useHistory();
 
   const handleClick = () => setShow(!show);
+
+  // uploading the image to Cloudinary
   const postDetails = (pic) => {
     setLoading(true);
     if (pic === undefined) {
@@ -66,6 +68,8 @@ const Signup = () => {
       return;
     }
   };
+
+  // on submitting the form
   const submitHandler = async () => {
     setLoading(true);
     if (!name || !email || !password || !confirmpassword) {
