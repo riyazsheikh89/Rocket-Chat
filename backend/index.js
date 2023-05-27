@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 
 const connectDB = require("./config/db-config");
 const userRoute = require("./routes/user-route");
+const { notFound, errorHandler } = require("./middlewares/error-handler");
 
 dotenv.config();
 const app = express();
@@ -15,6 +16,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", userRoute);
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, async () => {
