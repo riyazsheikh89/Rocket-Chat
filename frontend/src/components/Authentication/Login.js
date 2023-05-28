@@ -40,7 +40,7 @@ const Login = () => {
       const config = {
         headers: { "Content-type": "application/json" },
       };
-      const data = await axios.post(
+      const {data} = await axios.post(
         "/api/user/login",
         { email, password },
         config

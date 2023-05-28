@@ -9,12 +9,15 @@ const register = asyncHandler(async (req, res) => {
     throw new Error("Enter all the required feilds");
   }
   const user = await User.create({ name, email, password, image: pic });
+  const token = await user.generateJWT();
 
   res.status(201).json({
-    success: true,
-    data: user,
-    message: "Successfully created a user",
-    err: {},
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    admin: user.admin,
+    image: user.image,
+    token
   });
 });
 
@@ -34,10 +37,12 @@ const login = asyncHandler(async (req, res) => {
     if (await user.comparePassword(password)) {
       const token = await user.generateJWT();
       res.status(201).json({
-        success: true,
-        message: "Login Successful",
-        err: {},
-        data: token,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        admin: user.admin,
+        image: user.image,
+        token
       });
     } else {
       res.status(400);

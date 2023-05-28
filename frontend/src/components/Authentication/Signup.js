@@ -101,7 +101,7 @@ const Signup = () => {
         },
       };
       // API call to backend
-      const data = await axios.post(
+      const {data} = await axios.post(
         "/api/user/register",
         { name, email, password, pic },
         config
