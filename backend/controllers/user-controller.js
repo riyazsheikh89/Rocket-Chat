@@ -58,14 +58,14 @@ const findUsers = asyncHandler(async (req, res) => {
   const option = keyword
     ? {
         $or: [
-          // search for the matching name or email
-          { name: { $regex: keyword, $options: "i" } }, // i -> case insensitive
-          { email: { $regex: keyword, $options: "i" } },
+          // search for the matching name or email, starts with
+          { name: { $regex: "^" + keyword, $options: "i" } }, // i -> case insensitive
+          { email: { $regex: "^" + keyword, $options: "i" } },
         ],
       }
     : {};
   // find all the matching users, execpt the loged in user
-  const users = await User.find(option).find({ _id: { $ne: req.user.id } });
+  const users = await User.find(option).find({ _id: { $ne: req.user._id } });
   res.send(users);
 });
 
