@@ -18,7 +18,7 @@ const HomePage = () => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("userInfo"));
-        if (user  && history) { // if there is no userInfo variable inside local storage
+        if (user) { // if there is no userInfo variable inside local storage
           history.push("/chats");
         }
     }, [history]);
