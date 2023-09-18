@@ -11,14 +11,14 @@ import {
 } from "@chakra-ui/react";
 import Login from "../components/Authentication/Login";
 import Signup from "../components/Authentication/Signup";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
 
 const HomePage = () => {
   const history = useHistory();
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("userInfo"));
-        if (user) {
+        if (user  && history) { // if there is no userInfo variable inside local storage
           history.push("/chats");
         }
     }, [history]);
