@@ -17,8 +17,9 @@ const MyChats = ({fetchAgain}) => {
   const fetchChats = async() => {
     try {
       const config = {
-        "Content-type": "application/json",
-        headers: {Authorization: `Bearer ${user.token}`}
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`}
       };
       const { data } = await axios.get("/api/chat", config);
       setChats(data);
