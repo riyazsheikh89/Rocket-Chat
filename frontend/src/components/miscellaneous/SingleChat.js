@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, IconButton, Spinner, Text, FormControl, Input, useToast, } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import io from "socket.io-client";
 
 import { ChatState } from '../../context/ChatProvider'
 import { getSender, getSenderDetails } from '../../config/ChatLogics';
@@ -10,11 +11,16 @@ import UpdateGroupChatModal from './UpdateGroupChatModal';
 import './Style.css';
 import ScrollableChat from './ScrollableChat';
 
+const ENDPOINT = "http://localhost:5000";
+let socket, selectedChatCompare;
+
+
 const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState();
     const [loading, setLoading] = useState(false);
+    const [socketConnected,setSocketConnected] = useState(false);
 
     const toast = useToast();
     const { user, selectedChat, setSelectedChat } = ChatState();
@@ -36,6 +42,9 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
             console.log(messages);
             setMessages(data);
             setLoading(false);
+
+            // create a room using the chatID
+            socket.emit("join_chat", selectedChat._id);
         } catch (error) {
             toast({
                 title: "Error occured",
@@ -50,7 +59,25 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
     useEffect(() => {
         fetchMessages();
+        selectedChatCompare = selectedChat;
     }, [selectedChat]);
+
+    // socket.io setup from frontend
+    useEffect(() => {
+        socket = io(ENDPOINT);
+        socket.emit("setup", user);
+        socket.on("connection", () => setSocketConnected(true));
+    }, []);
+
+    useEffect(() => {
+        socket.on("message_received", (newMsgRcvd) => {
+            if (!selectedChatCompare || selectedChatCompare._id !== newMsgRcvd.chat._id) {
+                // give notification
+            } else {
+                setMessages([...messages, newMsgRcvd]);
+            }
+        });
+    });
 
     // function to send message
     const sendMessage = async (event) => {
@@ -68,8 +95,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
                     content: newMessage
                 }, config);
 
-                console.log(data);
-
+                socket.emit("new_message", data);
                 setNewMessage("");
                 setMessages([...messages, data]);
             } catch (error) {
