@@ -25,15 +25,25 @@ import { ChatState } from "../../context/ChatProvider";
 import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import NotificationBadge, { Effect } from 'react-notification-badge';
+
 import ChatLoading from "./ChatLoading";
 import UserListItem from "../User/UserListItem";
+import { getSender } from "../../config/ChatLogics";
 
 const SideDrawer = () => {
   const [search, setSearch] = useState();
   const [searchResult, setSearchResult] = useState();
   const [loading, setLoading] = useState();
   const [lodingChat, setLoadingChat] = useState();
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
   const history = useHistory();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
@@ -133,9 +143,28 @@ const SideDrawer = () => {
         <div>
           <Menu>
             <MenuButton p="15px">
+              <NotificationBadge
+                count={notification.length} 
+                effect={Effect.SCALE}
+              />
               <BellIcon fontSize="2xl" m={1} />
             </MenuButton>
-            {/* <MenuList></MenuList> */}
+            <MenuList pl={2}>
+              {!notification.length && "No new messages!"}
+              {notification.map((notif) => (
+                <MenuItem 
+                  key={notif._id} 
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New messages from: ${notif.chat.chatName}`
+                    : `New messages from: ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
@@ -170,16 +199,17 @@ const SideDrawer = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <Button onClick={handleSearch} > Go </Button>
+              <Button onClick={handleSearch}> Go </Button>
             </Box>
-            {loading ? (<ChatLoading/>) 
-            : (
+            {loading ? (
+              <ChatLoading />
+            ) : (
               searchResult?.map((user) => (
-                <UserListItem 
-                key={user._id}
-                user={user}
-                handleFunction={() => accessChat(user._id)}
-              />
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => accessChat(user._id)}
+                />
               ))
             )}
             {lodingChat && <Spinner ml="auto" display="flex" />}

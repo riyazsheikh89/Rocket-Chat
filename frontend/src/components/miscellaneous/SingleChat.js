@@ -37,7 +37,13 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     };
 
     const toast = useToast();
-    const { user, selectedChat, setSelectedChat } = ChatState();
+    const {
+      user,
+      selectedChat,
+      setSelectedChat,
+      notification,
+      setNotification,
+    } = ChatState();
 
 
     // fetch all the messages for the selected chat
@@ -53,7 +59,6 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
             };
             setLoading(true);
             const {data} = await axios.get(`/api/message/${selectedChat._id}`, config);
-            console.log(messages);
             setMessages(data);
             setLoading(false);
 
@@ -88,7 +93,10 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     useEffect(() => {
         socket.on("message_received", (newMsgRcvd) => {
             if (!selectedChatCompare || selectedChatCompare._id !== newMsgRcvd.chat._id) {
-                // give notification
+                if (!notification.includes(newMsgRcvd)) {
+                    setNotification([newMsgRcvd,  ...notification]);
+                    setFetchAgain(!fetchAgain);
+                }
             } else {
                 setMessages([...messages, newMsgRcvd]);
             }
