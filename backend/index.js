@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const socketio = require('socket.io');
+const path = require('path');
 
 const connectDB = require("./config/db-config");
 const userRoute = require("./routes/user-route");
@@ -21,6 +22,23 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRoute);
 app.use("/api/chat", chatRoute);
 app.use("/api/message", messageRoute);
+
+// -------------  DEPLOYMENT -------------
+
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
+  });
+} 
+else {
+  app.get("/", (req, res) => {
+    res.send("API is running successfuly");
+  });
+}
+
+// -------------  DEPLOYMENT -------------
 
 app.use(notFound);
 app.use(errorHandler);
