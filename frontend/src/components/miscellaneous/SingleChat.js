@@ -3,13 +3,15 @@ import { Box, IconButton, Spinner, Text, FormControl, Input, useToast, } from '@
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import io from "socket.io-client";
+import Lottie from "react-lottie";
 
 import { ChatState } from '../../context/ChatProvider'
 import { getSender, getSenderDetails } from '../../config/ChatLogics';
 import ProfileModal from './ProfileModal';
 import UpdateGroupChatModal from './UpdateGroupChatModal';
-import './Style.css';
 import ScrollableChat from './ScrollableChat';
+import './Style.css';
+import typing_animation from "../../Animations/typing_indicator_animation2.json";
 
 const ENDPOINT = "http://localhost:5000";
 let socket, selectedChatCompare;
@@ -20,7 +22,19 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState();
     const [loading, setLoading] = useState(false);
-    const [socketConnected,setSocketConnected] = useState(false);
+    const [socketConnected, setSocketConnected] = useState(false);
+    const [typing, setTyping] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
+
+    // default object for react-lottie animation of typing indicator
+    const defaultOptions = {
+        loop: true,
+        autoPlay: true,
+        animationData: typing_animation,
+        rendererSettings: {
+            preserveAspectRatio: "xMidYMid slice"
+        }
+    };
 
     const toast = useToast();
     const { user, selectedChat, setSelectedChat } = ChatState();
@@ -66,7 +80,9 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     useEffect(() => {
         socket = io(ENDPOINT);
         socket.emit("setup", user);
-        socket.on("connection", () => setSocketConnected(true));
+        socket.on("connected", () => setSocketConnected(true));
+        socket.on("typing", () => setIsTyping(true));
+        socket.on("stop_typing", () => setIsTyping(false));
     }, []);
 
     useEffect(() => {
@@ -82,6 +98,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
     // function to send message
     const sendMessage = async (event) => {
         if (event.key === "Enter" && newMessage) {
+            socket.emit("stop_typing", selectedChat._id);
             try {
                 const config = {
                     headers: {
@@ -111,9 +128,28 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         }
     } 
 
+    // Typing indicator logic
     const typingHandler = (e) => {
         setNewMessage(e.target.value);
-        // Future work: typing indicator
+        
+        if (!socketConnected)
+            return;
+
+        if (!typing) {
+            setTyping(true);
+            socket.emit("typing", selectedChat._id);
+        }
+
+        let lastTyping = new Date().getTime();
+        var timerLength = 3000; // 3000ms -> 3sec
+        setTimeout(() => {
+            var currentTime = new Date().getTime();
+            var timeDiff = currentTime - lastTyping;
+            if (timeDiff >= timerLength && typing) {
+                socket.emit("stop_typing", selectedChat._id);
+                setTyping(false);
+            }
+        }, timerLength);
     }
 
   return (
@@ -180,6 +216,14 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
                 )}
 
                 <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+                    {isTyping ? (
+                        <div>
+                            <Lottie
+                                options={defaultOptions}
+                                width={70}
+                                style={{ marginBottom: 15, marginLeft: 0 }}
+                            />
+                        </div>) : (<></>)}
                     <Input
                         variant="filled"
                         bg='#c4c4c0'

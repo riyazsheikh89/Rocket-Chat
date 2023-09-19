@@ -56,6 +56,9 @@ io.on("connection", (socket) => {
     console.log("User joined room: ", room);
   });
 
+  socket.on("typing", (room) => socket.in(room).emit("typing"));
+  socket.on("stop_typing", (room) => socket.in(room).emit("stop_typing"));
+
   socket.on("new_message", (newMsgRcvd) => {
     let chat = newMsgRcvd.chat;
 
@@ -67,6 +70,12 @@ io.on("connection", (socket) => {
       if (user._id !== newMsgRcvd.sender._id)
         socket.in(user._id).emit("message_received", newMsgRcvd);
     });
+  });
+
+  // Disconnect the socket connection to save bandwidth
+  socket.off("setup", () => {
+    console.log("User Disconnected");
+    socket.leave(user._id);
   });
 
 
