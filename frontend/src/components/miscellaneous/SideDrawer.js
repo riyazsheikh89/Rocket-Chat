@@ -129,7 +129,7 @@ const SideDrawer = () => {
       >
         <Tooltip label="Search contacts" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen}>
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
             <Text display={{ base: "none", md: "flex" }} p="4">
               Search or start a new chat
             </Text>
