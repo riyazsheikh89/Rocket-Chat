@@ -15,9 +15,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send("<h1>Chat Application using Socket.io </h1>");
-});
 
 app.use("/api/user", userRoute);
 app.use("/api/chat", chatRoute);
@@ -26,15 +23,17 @@ app.use("/api/message", messageRoute);
 // -------------  DEPLOYMENT -------------
 
 const __dirname1 = path.resolve();
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "PRODUCTION") {
   app.use(express.static(path.join(__dirname1, "/frontend/build")));
-  app.get("*", (req, res) => {
+  app.use("*", (req, res) => {
     res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"));
   });
 } 
 else {
-  app.get("/", (req, res) => {
-    res.send("API is running successfuly");
+  // this is to just showcase the user that backend running successfully,
+  // but, this is not inside PRODUCTION MODE
+  app.use("/*", (req, res) => {
+    res.send(`Backend is running successfuly on PORT: ${PORT}. Warning! This is a not inside PRODUCTION MODE`);
   });
 }
 
