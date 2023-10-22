@@ -58,7 +58,7 @@ const SideDrawer = () => {
   const handleSearch = async() => {
     if (!search) {
       toast({
-        title: "Please enter something",
+        title: "Please fill the input!",
         status: "warning",
         duration: 2000,
         isClosable: true,
@@ -103,6 +103,8 @@ const SideDrawer = () => {
       }
       setSelectedChat(data);
       setLoadingChat(false);
+      setSearch(null);
+      setSearchResult(null);
       onClose();
     } catch (error) {
       toast({
@@ -127,7 +129,7 @@ const SideDrawer = () => {
         p="5px 10px 5px 10px"
         borderWidth="5px"
       >
-        <Tooltip label="Search contacts" hasArrow placement="bottom-end">
+        <Tooltip hasArrow >
           <Button variant="ghost" onClick={onOpen}>
             <i className="fa-solid fa-magnifying-glass"></i>
             <Text display={{ base: "none", md: "flex" }} p="4">
@@ -136,8 +138,8 @@ const SideDrawer = () => {
           </Button>
         </Tooltip>
 
-        <Text fontSize="2xl" fontFamily="work sans">
-          Rocket-Chat
+        <Text fontSize="3xl" fontFamily="work sans">
+          Rocket Chat
         </Text>
 
         <div>
@@ -189,7 +191,7 @@ const SideDrawer = () => {
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px"> Search User </DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px"> Search Users </DrawerHeader>
 
           <DrawerBody>
             <Box display="flex" pb={2}>
@@ -199,7 +201,7 @@ const SideDrawer = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <Button onClick={handleSearch}> Go </Button>
+              <Button colorScheme="facebook" onClick={handleSearch}> Search </Button>
             </Box>
             {loading ? (
               <ChatLoading />
