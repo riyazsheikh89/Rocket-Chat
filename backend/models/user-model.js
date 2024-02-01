@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema(
     },
     image: {
       type: String,
-      default: "https://www.flaticon.com/free-icon/man_2202112",
+      default: "https://cdn-icons-png.flaticon.com/512/2202/2202112.png",
     },
   },
   { timestamps: true }
