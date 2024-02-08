@@ -44,7 +44,7 @@ userSchema.methods.generateJWT = function generate() {
   const token = jwt.sign(
     { id: this._id, email: this.email },
     process.env.JWT_SECRET,
-    { expiresIn: "1d" }
+    { expiresIn: "7d" }
   );
   return token;
 };
