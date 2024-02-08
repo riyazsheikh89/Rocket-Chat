@@ -88,7 +88,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setIsTyping(true));
         socket.on("stop_typing", () => setIsTyping(false));
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         socket.on("message_received", (newMsgRcvd) => {
@@ -231,7 +231,8 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
                                 width={70}
                                 style={{ marginBottom: 15, marginLeft: 0 }}
                             />
-                        </div>) : (<></>)}
+                        </div>) : (<></>)
+                    }
                     <Input
                         variant="filled"
                         bg='#c4c4c0'

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../../context/ChatProvider';
 import { Box, Button, Stack, Text, useToast } from '@chakra-ui/react';
+import { Avatar } from "@chakra-ui/react";
 import axios from 'axios';
 import { AddIcon } from '@chakra-ui/icons';
 import ChatLoading from './ChatLoading';
-import { getSender } from '../../config/ChatLogics';
+import { getSender, getSenderDetails } from '../../config/ChatLogics';
 import GroupChatModal from './GroupChatModal';
 
 const MyChats = ({fetchAgain}) => {
@@ -67,7 +68,7 @@ const MyChats = ({fetchAgain}) => {
         <GroupChatModal>
           <Button
             display="flex"
-            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+            fontSize={{ base: "17px", md: "12px", lg: "17px" }}
             rightIcon={<AddIcon />}
           >
             New Group Chat
@@ -99,9 +100,19 @@ const MyChats = ({fetchAgain}) => {
                 key={chat._id}
               >
                 <Text>
-                  {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
-                    : chat.chatName}
+                    <Avatar
+                      mr={3}
+                      size="sm"
+                      name={chat.users[0].name}
+                      src={!chat.isGroupChat
+                      ? getSenderDetails(loggedUser, chat.users).image
+                      : "https://shorturl.at/cDFTY"}
+                    />
+                    <span style={{paddingTop: "10px"}}>
+                      {!chat.isGroupChat
+                      ? getSender(loggedUser, chat.users)
+                      : chat.chatName}
+                    </span>
                 </Text>
               </Box>
             ))}
