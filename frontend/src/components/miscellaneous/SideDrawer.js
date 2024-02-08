@@ -57,13 +57,13 @@ const SideDrawer = () => {
   //Search users from DB
   const handleSearch = async() => {
     if (!search) {
-      toast({
+      /* toast({
         title: "Please fill the input!",
         status: "warning",
         duration: 2000,
         isClosable: true,
         position: "top-left"
-      });
+      }); */
       return;
     }
 
@@ -118,6 +118,13 @@ const SideDrawer = () => {
     }
   };
 
+  // Close the SideDrawer
+  const closeDrawer = () => {
+    setSearchResult(null);
+    setSearch(null);
+    onClose();
+  }
+
   return (
     <>
       <Box
@@ -129,10 +136,14 @@ const SideDrawer = () => {
         p="5px 10px 5px 10px"
         borderWidth="5px"
       >
-        <Tooltip hasArrow >
-          <Button variant="ghost" onClick={onOpen}>
+        <Tooltip hasArrow>
+          <Button
+            variant="ghost"
+            onClick={onOpen}
+            boxShadow="outline"
+          >
             <i className="fa-solid fa-magnifying-glass"></i>
-            <Text display={{ base: "none", md: "flex" }} p="4">
+            <Text display={{ base: "none", md: "flex" }} p="4" color="gray.600">
               Search or start a new chat
             </Text>
           </Button>
@@ -146,7 +157,7 @@ const SideDrawer = () => {
           <Menu>
             <MenuButton p="15px">
               <NotificationBadge
-                count={notification.length} 
+                count={notification.length}
                 effect={Effect.SCALE}
               />
               <BellIcon fontSize="2xl" m={1} />
@@ -154,8 +165,8 @@ const SideDrawer = () => {
             <MenuList pl={2}>
               {!notification.length && "No new messages!"}
               {notification.map((notif) => (
-                <MenuItem 
-                  key={notif._id} 
+                <MenuItem
+                  key={notif._id}
                   onClick={() => {
                     setSelectedChat(notif.chat);
                     setNotification(notification.filter((n) => n !== notif));
@@ -188,7 +199,7 @@ const SideDrawer = () => {
         </div>
       </Box>
 
-      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+      <Drawer placement="left" onClose={closeDrawer} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px"> Search Users </DrawerHeader>
@@ -196,12 +207,14 @@ const SideDrawer = () => {
           <DrawerBody>
             <Box display="flex" pb={2}>
               <Input
-                placeholder="Search by name or email"
+                placeholder="Enter name or email"
                 mr={2}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <Button colorScheme="facebook" onClick={handleSearch}> Search </Button>
+              <Button colorScheme="facebook" onClick={handleSearch}>
+                Search
+              </Button>
             </Box>
             {loading ? (
               <ChatLoading />
@@ -214,7 +227,19 @@ const SideDrawer = () => {
                 />
               ))
             )}
-            {lodingChat && <Spinner ml="auto" display="flex" />}
+
+            {/* after clicking on a particular chat */}
+            {lodingChat && (
+              <Spinner
+                ml="24"
+                mt="24"
+                thickness="3px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
+              />
+            )}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
