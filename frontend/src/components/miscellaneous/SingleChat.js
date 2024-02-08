@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, IconButton, Spinner, Text, FormControl, Input, useToast, } from '@chakra-ui/react';
+import { Box, IconButton, Spinner, Text, FormControl, Input, useToast, Button, } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import io from "socket.io-client";
@@ -105,7 +105,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
     // function to send message
     const sendMessage = async (event) => {
-        if (event.key === "Enter" && newMessage) {
+        if (newMessage) {
             socket.emit("stop_typing", selectedChat._id);
             try {
                 const config = {
@@ -223,7 +223,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
                     </div> 
                 )}
 
-                <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+                <FormControl onKeyDown={(e) => e.key === 'Enter' && sendMessage()} isRequired mt={3}>
                     {isTyping ? (
                         <div>
                             <Lottie
@@ -233,14 +233,20 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
                             />
                         </div>) : (<></>)
                     }
-                    <Input
-                        variant="filled"
-                        bg='#c4c4c0'
-                        placeholder='Type message here...'
-                        onChange={typingHandler}
-                        value={newMessage}
-                        borderRadius="30px"  
-                    />
+                    <div style={{display: "flex"}}>
+                        <Input
+                            variant="filled"
+                            bg='#c4c4c0'
+                            placeholder='Type message here...'
+                            onChange={typingHandler}
+                            value={newMessage}
+                            borderRadius="30px"
+                            mr="1"
+                        />
+                        <Button colorScheme='messenger' onClick={sendMessage}>
+                            <i class="fa-solid fa-arrow-right "></i>
+                        </Button>
+                    </div>
                 </FormControl>
 
                 </Box>
