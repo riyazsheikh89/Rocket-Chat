@@ -149,7 +149,8 @@ const SideDrawer = () => {
           </Button>
         </Tooltip>
 
-        <Text fontSize="3xl" fontFamily="work sans">
+        <Text fontSize="3xl" fontFamily="work sans" color="#F5455C" fontWeight="bold">
+          <Avatar src="https://shorturl.at/BI079" mr="2" mt="2" size="sm"/>
           Rocket Chat
         </Text>
 
