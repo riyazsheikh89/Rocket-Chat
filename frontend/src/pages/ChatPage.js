@@ -6,8 +6,6 @@ import ChatBox from '../components/miscellaneous/ChatBox';
 import { useState } from "react";
 
 
-
-
 const ChatPage = () => {
   const {user} = ChatState();
   const [fetchAgain, setFetchAgain] = useState(false);
@@ -18,8 +16,7 @@ const ChatPage = () => {
 
     <Box display="flex" justifyContent="space-between" w="100%" h="87.45vh" p="10px" >
       {user && <MyChats fetchAgain={fetchAgain}/>}
-      {user && 
-      (<ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />)}
+      {user && (<ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />)}
     </Box>
       
     </div>
