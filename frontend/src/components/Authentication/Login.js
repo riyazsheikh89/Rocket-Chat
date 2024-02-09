@@ -95,7 +95,7 @@ const Login = () => {
         </InputGroup>
       </FormControl>
       <Button
-        colorScheme="twitter"
+        colorScheme="messenger"
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}
@@ -105,7 +105,8 @@ const Login = () => {
       </Button>
 
       <Button
-        colorScheme="green"
+        colorScheme="whatsapp"
+        color="black"
         width="100%"
         style={{ marginTop: 15 }}
         onClick={() => {

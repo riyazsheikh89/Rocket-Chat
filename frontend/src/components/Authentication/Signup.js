@@ -72,9 +72,9 @@ const Signup = () => {
     setLoading(true);
     if (!name || !email || !password || !confirmpassword) {
       toast({
-        title: "Please fill all the fields!",
+        title: "Please fill all the details!",
         status: "warning",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
         position: "top-right",
       });
@@ -191,6 +191,8 @@ const Signup = () => {
 
       <Button
         colorScheme="whatsapp"
+        fontWeight="bold"
+        color="black"
         width="100%"
         style={{ marginTop: 15 }}
         onClick={submitHandler}

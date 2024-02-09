@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import {
+  Avatar,
   Box,
   Container,
   Tab,
@@ -31,13 +32,20 @@ const HomePage = () => {
         justifyContent="center"
         textAlign="center"
         p={3}
-        bg={"white"}
+        bg="white"
         w="100%"
         m="30px 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text fontSize="4xl" fontFamily="Work Sans" justifyContent="center">
+        <Text 
+          fontSize="4xl" 
+          fontFamily="Work Sans" 
+          justifyContent="center"
+          color="#F5455C"
+          fontWeight="bold"
+        >
+          <Avatar src="https://shorturl.at/BI079" mr="2" mt="3" size="sm"/>
           Rocket-Chat
         </Text>
       </Box>
@@ -47,9 +55,9 @@ const HomePage = () => {
         justifyContent="center"
         textAlign="center"
         p={3}
-        bg={"white"}
+        bg="white"
         w="100%"
-        m="10px 0 15px 0"
+        m="0 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
       >
