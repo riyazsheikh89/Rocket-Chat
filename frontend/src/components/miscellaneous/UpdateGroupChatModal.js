@@ -145,10 +145,10 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         chatName: groupChatName
       }, config);
 
-      setSelectedChat(data);
-      setFetchAgain(!fetchAgain);
+      // setSelectedChat(data);
+      // setFetchAgain(!fetchAgain);
       setRenameLoading(false);
-
+      window.location.reload();
     } catch (error) {
       toast({
         title: "Error occured!",

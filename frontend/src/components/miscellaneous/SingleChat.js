@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, IconButton, Spinner, Text, FormControl, Input, useToast, Button, } from '@chakra-ui/react';
+import { Box, IconButton, Spinner, Text, FormControl, Input, useToast, Button, Avatar, } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import io from "socket.io-client";
@@ -183,17 +183,34 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
                     { !selectedChat.isGroupChat ? (
                         <>
-                            {getSender(user, selectedChat.users)}
+                            <Box>
+                                <Avatar 
+                                    mt={2} 
+                                    mr={3} 
+                                    size="sm"
+                                    src={getSenderDetails(user, selectedChat.users).image}
+                                />
+                                {/* User or Group Name */}
+                                {getSender(user, selectedChat.users)}
+                            </Box>
                             <ProfileModal user={getSenderDetails(user, selectedChat.users)}/>
                         </>
                     ) : (
                         <>
-                        {selectedChat.chatName}
-                        {<UpdateGroupChatModal
-                            fetchAgain={fetchAgain}
-                            setFetchAgain={setFetchAgain}
-                            fetchMessages={fetchMessages}
-                        />}
+                            <Box>
+                                <Avatar 
+                                    mr={3} 
+                                    mt={2} 
+                                    size="sm" 
+                                    src="https://shorturl.at/cDFTY"
+                                />
+                                {selectedChat.chatName}
+                            </Box>
+                            {<UpdateGroupChatModal
+                                fetchAgain={fetchAgain}
+                                setFetchAgain={setFetchAgain}
+                                fetchMessages={fetchMessages} 
+                            />}
                         </>
                     )}
                 </Text>
