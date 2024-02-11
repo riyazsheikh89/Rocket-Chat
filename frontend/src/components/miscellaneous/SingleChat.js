@@ -12,8 +12,9 @@ import UpdateGroupChatModal from './UpdateGroupChatModal';
 import ScrollableChat from './ScrollableChat';
 import './Style.css';
 import typing_animation from "../../Animations/typing_indicator_animation2.json";
+import { config } from "../../config/config.js"
 
-const ENDPOINT = "http://localhost:5000";
+// const ENDPOINT = "http://localhost:5000";
 let socket, selectedChatCompare;
 
 
@@ -83,7 +84,7 @@ const SingleChat = ({fetchAgain, setFetchAgain}) => {
 
     // socket.io setup from frontend
     useEffect(() => {
-        socket = io(ENDPOINT);
+        socket = io(config.ENDPOINT);
         socket.emit("setup", user);
         socket.on("connected", () => setSocketConnected(true));
         socket.on("typing", () => setIsTyping(true));

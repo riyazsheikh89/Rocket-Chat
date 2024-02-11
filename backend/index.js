@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const socketio = require('socket.io');
 const path = require('path');
+const cors = require("cors");
 
 const connectDB = require("./config/db-config");
 const userRoute = require("./routes/user-route");
@@ -11,6 +12,12 @@ const { notFound, errorHandler } = require("./middlewares/error-handler");
 
 dotenv.config();
 const app = express();
+
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -52,8 +59,9 @@ const server = app.listen(PORT, async () => {
 const io = socketio(server, {
   pingTimeout: 60000, // after 60s connection will broke
   cors: {
-    origin: "http://localhost:3000"
-  }
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
 });
 
 io.on("connection", (socket) => {
