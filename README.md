@@ -19,6 +19,10 @@ Setup the environmental variables inside `.env` file. Create the `.env` file ins
 - MONGODB_URI=<your_mongodb_url>
 - JWT_SECRET=<your_secrect_key>
 - NODE_ENV=PRODUCTION
+- CORS_ORGIN="http://localhost:3000"
+
+### setup config.js
+for setting up config.js file go to `cd frontend/src/config/config.js` and change the ENDPOINT acoordingly. For example if your backend is running on "https://localhost:5000", mention it to ENDPOINT.
 
 ## STEP 4 : (Run the project)
 you can run the project in 2 ways, either in PRODUCTION MODE where your Backend and Frontend will run on the same port, or in DEVELOPMENT MODE where Frontend and Backend will run in different PORT and you have to run both Frontend and Backend simultaneously. <br>
