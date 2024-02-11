@@ -30,6 +30,7 @@ import NotificationBadge, { Effect } from 'react-notification-badge';
 import ChatLoading from "./ChatLoading";
 import UserListItem from "../User/UserListItem";
 import { getSender } from "../../config/ChatLogics";
+import app_logo from "../../../src/app_logo_rectangle.png"
 
 const SideDrawer = () => {
   const [search, setSearch] = useState();
@@ -150,7 +151,7 @@ const SideDrawer = () => {
         </Tooltip>
 
         <Text fontSize="3xl" fontFamily="work sans" color="#F5455C" fontWeight="bold">
-          <Avatar src="https://shorturl.at/BI079" mr="2" mt="2" size="sm"/>
+          <Avatar src={app_logo} mr="2" mt="2" size="sm"/>
           Rocket Chat
         </Text>
 

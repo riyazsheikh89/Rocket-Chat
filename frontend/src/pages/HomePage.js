@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Login from "../components/Authentication/Login";
 import Signup from "../components/Authentication/Signup";
+import app_logo from "../../src/app_logo_rectangle.png"
 import { useHistory } from "react-router-dom";
 
 const HomePage = () => {
@@ -45,7 +46,7 @@ const HomePage = () => {
           color="#F5455C"
           fontWeight="bold"
         >
-          <Avatar src="https://shorturl.at/BI079" mr="2" mt="3" size="sm"/>
+          <Avatar src={app_logo} mr="2" mt="3" size="sm"/>
           Rocket-Chat
         </Text>
       </Box>
