@@ -35,6 +35,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
   // add new user to the group
   const hadleAddUser = async (newUser) => {
+    setSearch("");
+    setSearchResult([]);
     // if the newUser alredy exists in the group
     if (selectedChat.users.find((usr) => usr._id === newUser._id)) {
       toast({
@@ -71,7 +73,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         userId: newUser._id
       }, config);
 
-      setSelectedChat(data);
+      setSelectedChat(data.updatedGroup);
       setFetchAgain(!fetchAgain);
       setLoading(false);
     } catch (error) {
@@ -111,10 +113,11 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         userId: userToBeRemoved._id
       }, config );
 
-      userToBeRemoved._id === user._id ? setSelectedChat() : setSelectedChat(data);
+      userToBeRemoved._id === user._id ? setSelectedChat(null) : setSelectedChat(data.updatedGroup);
       setFetchAgain(!fetchAgain);
       fetchMessages();
       setLoading(false);
+      onClose();  // close the Modal
     } catch (error) {
       toast({
         title: "Error occured!",
@@ -145,10 +148,9 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
         chatName: groupChatName
       }, config);
 
-      // setSelectedChat(data);
-      // setFetchAgain(!fetchAgain);
+      setSelectedChat(data.chat);
+      setFetchAgain(!fetchAgain);
       setRenameLoading(false);
-      window.location.reload();
     } catch (error) {
       toast({
         title: "Error occured!",
@@ -161,11 +163,14 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       setRenameLoading(false);
     }
     setGroupChatName("");
+    onClose();  // close the Modal
   };
 
   // search user to add into the group
   const handleSearch = async (query) => {
     if (!query) {
+      setSearch("");
+      setSearchResult([]);
       return;
     }
     setSearch(query);
@@ -245,6 +250,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
             <Input
                 placeholder="Add new users"
                 mb={1}
+                value={search}
                 onChange={(e) => handleSearch(e.target.value)}
               />
             </FormControl>

@@ -121,13 +121,13 @@ const renameGroup = asyncHandler(async(req, res) => {
 // Add new user to group
 const addToGroup = asyncHandler(async(req, res) => {
     const { chatId, userId } = req.body;
-    const addedUser = await Chat.findByIdAndUpdate(chatId, 
+    const updatedGroup = await Chat.findByIdAndUpdate(chatId, 
         {$push: {users: userId} },
         {new: true})
         .populate("users", "-password")
         .populate("admin", "-password");
     
-    if (!addedUser) {
+    if (!updatedGroup) {
         res.status(404);
         throw new Error("Chat not found");
     } else {
@@ -135,7 +135,7 @@ const addToGroup = asyncHandler(async(req, res) => {
             success: true,
             message: "successfully added user into the group",
             err: {},
-            addedUser,
+            updatedGroup,
         });
     }
 });
@@ -144,13 +144,13 @@ const addToGroup = asyncHandler(async(req, res) => {
 // Remove a user from group
 const removeFromGroup = asyncHandler(async(req, res) => {
     const { chatId, userId } = req.body;
-    const removedUser = await Chat.findByIdAndUpdate(chatId, 
+    const updatedGroup = await Chat.findByIdAndUpdate(chatId, 
         {$pull: {users: userId} },
         {new: true})
         .populate("users", "-password")
         .populate("admin", "-password");
     
-    if (!removedUser) {
+    if (!updatedGroup) {
         res.status(404);
         throw new Error("Chat not found");
     } else {
@@ -158,7 +158,7 @@ const removeFromGroup = asyncHandler(async(req, res) => {
             success: true,
             message: "successfully removed user from the group",
             err: {},
-            removedUser,
+            updatedGroup,
         });
     }
 });
